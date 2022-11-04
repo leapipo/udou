@@ -1,7 +1,7 @@
-import { message } from "antd";
-import BooleanInput from "./BooleanInput";
-import QuantitativeInput from "./QuantitativeInput/QuantitativeInput";
-import { YesEntry, NoEntry } from "./BooleanEntry";
+import { message } from 'antd';
+import BooleanInput from './BooleanInput';
+import QuantitativeInput from './QuantitativeInput/QuantitativeInput';
+import { YesEntry, NoEntry } from './BooleanEntry';
 
 const componentTypes = {
   boolean: {
@@ -18,11 +18,13 @@ const componentTypes = {
 };
 
 export default function Entry({
+  // below: props
+  // Kurzschreibweise (dann muss man unten nicht mehr props.trackable)
   trackable,
   date,
   entry,
   onChange,
-  setDayEntries,
+  // setDayEntries,
 }) {
   const { component: Component, renderValue } = componentTypes[trackable.type];
 
@@ -32,20 +34,20 @@ export default function Entry({
       date: date.toISOString().slice(0, 10),
       ...value,
     };
-    fetch("/entries", {
-      method: "POST",
+    fetch('/entries', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(newEntry),
     })
       .then((response) => {
-        if (!response.ok) throw new Error("Network response was not OK");
-        message.success("Entry added");
+        if (!response.ok) throw new Error('Network response was not OK');
+        message.success('Entry added');
         onChange(date);
       })
       .catch(() => {
-        message.error("An error happened");
+        message.error('An error happened');
       }, []);
   };
 
