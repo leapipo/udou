@@ -5,12 +5,14 @@ import Entry from './components/Entry/Entry';
 import { StyledCollapse, DateBar, Wrapper, Dot } from './Trackables.style';
 import { getEntries, getTrackables } from '../../common/fetch-functions';
 import AddTrackable from './components/AddTrackable/AddTrackable';
+import DeleteTrackable from './components/DeleteTrackable/DeleteTrackable';
 
 const { Panel } = StyledCollapse;
 
 export default function Trackables({ date }) {
   const [dayEntries, setDayEntries] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [trackables, setTrackables] = useState([]);
 
   // dayEntries is a function from fetch-functions and it is giving us all entries for a specific user from db
@@ -35,8 +37,16 @@ export default function Trackables({ date }) {
     setOpen(true);
   };
 
+  // close is the same function for both drawers
+  // other than open
+
   const onClose = () => {
     setOpen(false);
+    setOpenDelete(false);
+  };
+
+  const showOpenDelete = () => {
+    setOpenDelete(true);
   };
 
   // return statement is everything that is on the left
@@ -88,8 +98,17 @@ export default function Trackables({ date }) {
         setTrackables={setTrackables}
       />
       {/* Button "Add trackable" */}
+      {/* onClick executes showDrawer function */}
       <Button type='dashed' onClick={showDrawer}>
         Add trackable
+      </Button>
+      <DeleteTrackable
+        open={openDelete}
+        onClose={onClose}
+        trackables={trackables}
+      />
+      <Button type='dashed' onClick={showOpenDelete}>
+        Manage trackables
       </Button>
     </Wrapper>
   );

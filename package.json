@@ -25,7 +25,6 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
-
   "browserslist": {
     "production": [
       ">0.2%",
