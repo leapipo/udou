@@ -9,13 +9,48 @@ import {
   List,
   Typography,
   Tooltip,
+  Popconfirm,
+  ConfigProvider,
 } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Dot } from './DeleteTrackable.style';
 import { useState } from 'react';
+import { getTrackables } from '../../../../common/fetch-functions';
 
-function DeleteTrackable({ onClose, open, trackables }) {
+function DeleteTrackable({ onClose, open, trackables, setTrackables }) {
   const trackedItems = trackables;
+
+  const confirm = (id) => {
+    console.log(id);
+
+    deleteTrack(id);
+  };
+
+  const cancel = (e) => {
+    console.log(e);
+    message.error('Trackable is retained');
+  };
+
+  // trackable is deleted but panel shows change only after reload
+
+  async function deleteTrack(id) {
+    let options = {
+      method: 'DELETE',
+    };
+    try {
+      let response = await fetch(`/trackables/${id}`, options);
+      if (response.ok) {
+        message.success('Trackable was deleted');
+        let data = await getTrackables();
+        setTrackables(data);
+      } else {
+        console.log(`Server error: ${response.status} ${response.statusText}`);
+      }
+    } catch (err) {
+      console.log(`Server error: ${err.message}`);
+    }
+  }
+
   return (
     <>
       <AntDrawer
@@ -34,9 +69,17 @@ function DeleteTrackable({ onClose, open, trackables }) {
               <Dot color={trackable.color} />
               {trackable.name}
               <Tooltip title='delete'>
-                <Button type='primary' icon={<DeleteOutlined />}>
-                  Delete
-                </Button>
+                <Popconfirm
+                  title='Are you sure to delete this trackable?'
+                  onConfirm={() => confirm(trackable.id)}
+                  onCancel={cancel}
+                  okText='Yes'
+                  cancelText='No'
+                >
+                  <Button type='primary' icon={<DeleteOutlined />}>
+                    Delete
+                  </Button>
+                </Popconfirm>
               </Tooltip>
             </List.Item>
           )}

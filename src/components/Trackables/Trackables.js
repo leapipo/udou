@@ -106,6 +106,7 @@ export default function Trackables({ date }) {
         open={openDelete}
         onClose={onClose}
         trackables={trackables}
+        setTrackables={setTrackables}
       />
       <Button type='dashed' onClick={showOpenDelete}>
         Manage trackables
