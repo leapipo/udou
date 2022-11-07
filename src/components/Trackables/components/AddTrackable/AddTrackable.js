@@ -20,22 +20,26 @@ function AddTrackable({ onClose, open, setTrackables }) {
     value === 'quantitative' ? setQuantitative(true) : setQuantitative(false);
   const [form] = Form.useForm();
 
-  function addTrackable(newTrackable) {
-    fetch('/trackables', {
+  async function addTrackable(newTrackable) {
+    let options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newTrackable),
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error('Network response was not OK');
-        message.success('Trackable created!');
-        getTrackables(setTrackables);
-      })
-      .catch(() => {
-        message.error('An error happened');
-      }, []);
+    };
+    try {
+      let response = await fetch('/trackables', options);
+      if (response.ok) {
+        message.success('Trackable was added');
+        let data = await getTrackables();
+        setTrackables(data);
+      } else {
+        console.log(`Server error: ${response.status} ${response.statusText}`);
+      }
+    } catch (err) {
+      console.log(`Server error: ${err.message}`);
+    }
   }
 
   const submitForm = (values) => {

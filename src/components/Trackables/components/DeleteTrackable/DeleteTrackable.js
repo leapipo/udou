@@ -31,8 +31,6 @@ function DeleteTrackable({ onClose, open, trackables, setTrackables }) {
     message.error('Trackable is retained');
   };
 
-  // trackable is deleted but panel shows change only after reload
-
   async function deleteTrack(id) {
     let options = {
       method: 'DELETE',
@@ -65,9 +63,21 @@ function DeleteTrackable({ onClose, open, trackables, setTrackables }) {
           bordered
           dataSource={trackedItems}
           renderItem={(trackable) => (
-            <List.Item key={trackable.id}>
-              <Dot color={trackable.color} />
-              {trackable.name}
+            <List.Item
+              key={trackable.id}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '14, 1fr',
+                gridTemplateRows: '1, 1fr',
+              }}
+            >
+              <Dot
+                color={trackable.color}
+                style={{ gridColumnStart: 1, gridColumnEnd: 2 }}
+              />
+              <div style={{ gridColumnStart: 2, gridColumnEnd: 3 }}>
+                {trackable.name}
+              </div>
               <Tooltip title='delete'>
                 <Popconfirm
                   title='Are you sure to delete this trackable?'
@@ -76,7 +86,11 @@ function DeleteTrackable({ onClose, open, trackables, setTrackables }) {
                   okText='Yes'
                   cancelText='No'
                 >
-                  <Button type='primary' icon={<DeleteOutlined />}>
+                  <Button
+                    type='primary'
+                    icon={<DeleteOutlined />}
+                    style={{ gridColumnStart: 13, gridColumnEnd: 14 }}
+                  >
                     Delete
                   </Button>
                 </Popconfirm>
@@ -90,12 +104,3 @@ function DeleteTrackable({ onClose, open, trackables, setTrackables }) {
 }
 
 export default DeleteTrackable;
-
-// Use AntDrawer like in AddTrackable component
-// Also button below Add trackable button (delete trackable)
-// See there a list of all trackables
-// Probably possible to use getTrackables (from fetch file)
-// Possibility to delete some with button
-// For deleting: find trackable id and write DELETE req
-// Delete trackable_id from every day entry (loop over every day entry in entries table) in db
-// Delete whole trackable entry in trackables in db

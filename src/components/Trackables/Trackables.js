@@ -99,7 +99,11 @@ export default function Trackables({ date }) {
       />
       {/* Button "Add trackable" */}
       {/* onClick executes showDrawer function */}
-      <Button type='dashed' onClick={showDrawer}>
+      <Button
+        type='dashed'
+        onClick={showDrawer}
+        style={{ marginBottom: '5px' }}
+      >
         Add trackable
       </Button>
       <DeleteTrackable
@@ -109,7 +113,7 @@ export default function Trackables({ date }) {
         setTrackables={setTrackables}
       />
       <Button type='dashed' onClick={showOpenDelete}>
-        Manage trackables
+        Delete trackables
       </Button>
     </Wrapper>
   );
