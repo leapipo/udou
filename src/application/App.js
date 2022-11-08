@@ -8,14 +8,50 @@ import Trackables from '../components/Trackables/Trackables';
 import './App.less';
 import Overview from '../components/Overview/Overview';
 import { getCurrentUser } from '../common/fetch-functions';
+import { Dropdown, Space, Menu } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
+
+const menu = (
+  <Menu
+    items={[
+      {
+        key: '1',
+        label: (
+          <a target='_blank' rel='noopener noreferrer'>
+            Help
+          </a>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <a target='_blank' rel='noopener noreferrer'>
+            Settings
+          </a>
+        ),
+      },
+      {
+        type: 'divider',
+      },
+      {
+        key: '3',
+        label: (
+          <a target='_blank' rel='noopener noreferrer'>
+            Logout
+          </a>
+        ),
+      },
+    ]}
+  />
+);
 
 function App() {
   const [currentUser, setCurrentUser] = useState([]); // TODO User profile
   const [date, setDate] = useState(dayjs());
   const [overview, setOverview] = useState(false);
-  // log statement below does not show ID of currentUser
+
   console.log(`The current user ID is ${currentUser}`);
 
   const showOverview = () => {
@@ -27,26 +63,38 @@ function App() {
   };
 
   useEffect(() => {
-    getCurrentUser()
-      .then(setCurrentUser);
+    getCurrentUser().then(setCurrentUser);
   }, []);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Layout>
         <Overview overview={overview} onClose={closeOverview} />
-        <Header className="app-header">
+        <Header className='app-header'>
           <Container>
             <div>
-              <span className="logo">UdoU</span>
+              <span className='logo'>UdoU</span>
             </div>
-            <Avatar icon={<UserOutlined />} />
+
+            <Dropdown overlay={menu} className='dropMenu'>
+              <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                  <Avatar icon={<UserOutlined />} />
+
+                  <DownOutlined style={{ fontSize: '20px' }} />
+                </Space>
+              </a>
+            </Dropdown>
           </Container>
         </Header>
         <Content>
           <Container>
             <Trackables date={date} onChange={setDate} />
-            <Calendar date={date} onChange={setDate} showOverview={showOverview} />
+            <Calendar
+              date={date}
+              onChange={setDate}
+              showOverview={showOverview}
+            />
           </Container>
         </Content>
       </Layout>

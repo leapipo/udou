@@ -18,8 +18,6 @@ const componentTypes = {
 };
 
 export default function Entry({
-  // below: props
-  // Kurzschreibweise (dann muss man unten nicht mehr props.trackable)
   trackable,
   date,
   entry,

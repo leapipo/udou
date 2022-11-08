@@ -1,20 +1,14 @@
 import {
   Button,
   Drawer as AntDrawer,
-  Form,
-  Input,
   message,
-  Select,
   Divider,
   List,
-  Typography,
   Tooltip,
   Popconfirm,
-  ConfigProvider,
 } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Dot } from './DeleteTrackable.style';
-import { useState } from 'react';
 import { getTrackables } from '../../../../common/fetch-functions';
 
 function DeleteTrackable({ onClose, open, trackables, setTrackables }) {

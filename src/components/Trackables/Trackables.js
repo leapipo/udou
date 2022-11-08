@@ -15,8 +15,6 @@ export default function Trackables({ date }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [trackables, setTrackables] = useState([]);
 
-  // dayEntries is a function from fetch-functions and it is giving us all entries for a specific user from db
-  // with getTrackableEntry we can find the id from a specfic trackable
   const getTrackableEntry = (id) =>
     dayEntries.find((entry) => id === entry.trackable_id);
 
@@ -49,38 +47,25 @@ export default function Trackables({ date }) {
     setOpenDelete(true);
   };
 
-  // return statement is everything that is on the left
-
   return (
     <Wrapper>
-      {/* shows date on top */}
       {/* DateBar is showing current day as it is using the dayjs library */}
       <DateBar>{dayjs(date).format('dddd, MMMM D, YYYY')}</DateBar>
       <StyledCollapse bordered={false} defaultActiveKey={[1]}>
-        {/* list of trackables with make new entry functionality */}
+        {/* list of trackables with new entry functionality */}
         {trackables.map(
           (trackable) =>
             // if trackable is visible
             // show panel and entry
-            // panel and entry show automatically, user does not have to click on it (both is always there als long as there is a visible trackable)
-            // will show trackables list with active trackables or trackables that are currently inactive but have entries in the past, so the user can still see the old entries
             isVisible(trackable) && (
               <Panel
                 header={trackable.name}
                 key={trackable.id + date}
                 extra={<Dot color={trackable.color} />}
               >
-                {/* What will be written in between Panel will show above entry but not next to the colored dot 
-                but Panel can only have 3 "properties"
-                extra is already used, but maybe use a div and have color dot and delete button inside (or new component, see DeleteTrackable.js with AntDrawer)
-                */}
                 <Entry
                   // trackable is passed as a prop to Entry component
-                  // Entry for trackable on a specific day (not relevant for delete functionality)
-                  // But than I won't need it for adding the delete funtion
-                  // Delete could happen in this file (panel) or in DeleteTrackable.js
                   trackable={trackable}
-                  // id of specific entry
                   entry={getTrackableEntry(trackable.id)}
                   date={date}
                   onChange={getEntries}
@@ -91,7 +76,7 @@ export default function Trackables({ date }) {
         )}
       </StyledCollapse>
 
-      {/* functionality for actually adding a new trackable */}
+      {/* functionality for adding new trackable */}
       <AddTrackable
         open={open}
         onClose={onClose}
